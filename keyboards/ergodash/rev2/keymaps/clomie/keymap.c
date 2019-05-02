@@ -10,14 +10,18 @@ extern keymap_config_t keymap_config;
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
-  LOWER,
-  RAISE,
-  ADJUST,
-  WM_MHKN,
-  WM_HKEI
+  MC_DEBG,
 };
 
-#define EISU LALT(KC_GRV)
+#define SHIFTSP MT(MOD_LSFT, KC_SPC)
+
+enum user_macro {
+  UM_RAISE_KANA_HENKAN,
+  UM_LOWER_EISU_MUHENKAN,
+};
+#define RAISE MACROTAP(UM_RAISE_KANA_HENKAN)
+#define LOWER MACROTAP(UM_LOWER_EISU_MUHENKAN)
+#define ADJUST MO(_ADJUST)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -29,17 +33,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+--------+--------+--------+--------+--------+--------+------------------------+--------+--------+--------+--------+--------+--------+--------|
    * |      |    A   |    S   |    D   |    F   |    G   | PrtScr |                        |    B   |    H   |    J   |    K   |    L   |   ;+   |   :*   |
    * |------+--------+--------+--------+--------+--------+---------------------------------+--------+--------+--------+--------+--------+--------+--------|
-   * | Shift|    Z   |    X   |    C   |    V   |    B   |  変換  |                        |  Bcksp |    N   |    M   |   ,>   |   .>   |   /?   |   \_   |
+   * | Shift|    Z   |    X   |    C   |    V   |    B   |        |                        |  Bcksp |    N   |    M   |   ,>   |   .>   |   /?   |   \_   |
    * |---------------+--------+--------+--------+--------+--------+--------+------+--------+--------+--------+--------+--------+--------+-----------------|
-   * | Ctrl |        |   GUI  |   Alt  ||||||||||  Lower |  Space | 無変換 ||||||||  Enter |  Space |  Raise ||||||||||  Left  |  Down  |   Up   |  Right |
+   * | Ctrl |   Alt  |   GUI  |   Alt  ||||||||||  Lower |Spc/Shft|  Enter ||||||||  Enter |Spc/Shft|  Raise ||||||||||  Left  |  Down  |   Up   |  Right |
    * ,----------------------------------------------------------------------------------------------------------------------------------------------------.
    */
   [_QWERTY] = LAYOUT( \
     KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,                             KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, JP_CIRC, \
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    JP_LBRC,                          JP_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    JP_AT,   \
     XXXXXXX, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_PSCR,                          KC_B,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, JP_COLN, \
-    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    WM_HKEI,                          KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, JP_BSLS, \
-    KC_LCTL, KC_LALT, KC_LWIN, KC_LALT,          LOWER,   KC_SPC,  KC_LSFT,        KC_ENT,  KC_SPC,  RAISE,            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
+    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    XXXXXXX,                          KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, JP_BSLS, \
+    KC_LCTL, KC_LALT, KC_LWIN, KC_LALT,          LOWER,   SHIFTSP, KC_ENT,         KC_ENT,  SHIFTSP, RAISE,            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
   ),
 
   /* Raise
@@ -56,7 +60,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,----------------------------------------------------------------------------------------------------------------------------------------------------.
    */
   [_RAISE] = LAYOUT(
-    JP_ZHTG, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  JP_YEN,  \
+    _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  JP_YEN,  \
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                          XXXXXXX, XXXXXXX, KC_HOME, XXXXXXX, KC_PGUP, KC_F12,  JP_LBRC, \
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                          XXXXXXX, XXXXXXX, KC_END,  KC_UP,   KC_PGDN, XXXXXXX, JP_RBRC, \
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,                          KC_DEL,  XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, \
@@ -77,10 +81,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,----------------------------------------------------------------------------------------------------------------------------------------------------.
    */
   [_LOWER] = LAYOUT(
-    _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                            KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11 , KC_F12,  JP_YEN,  \
+    JP_ZHTG, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                            KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11 , KC_F12,  JP_YEN,  \
     _______, _______, _______, _______, _______, _______, _______,                          XXXXXXX, XXXXXXX, KC_7,    KC_8,    KC_9,    KC_PGUP, KC_PSCR, \
     _______, _______, _______, _______, _______, _______, _______,                          XXXXXXX, XXXXXXX, KC_4,    KC_5,    KC_6,    KC_PGDN, XXXXXXX, \
-    _______, _______, _______, _______, _______, _______, WM_MHKN,                          KC_BSPC, XXXXXXX, KC_1,    KC_2,    KC_3,    XXXXXXX, XXXXXXX, \
+    _______, _______, _______, _______, _______, _______, _______,                          KC_BSPC, XXXXXXX, KC_1,    KC_2,    KC_3,    XXXXXXX, XXXXXXX, \
     _______, _______, _______, _______,          _______, _______, _______,        XXXXXXX, XXXXXXX, ADJUST,           KC_0,    KC_DOT,  KC_COMM, KC_NO    \
   ),
 
@@ -99,7 +103,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_ADJUST] = LAYOUT(
     AG_SWAP, _______, _______, _______, _______, _______, _______,                         _______, _______, _______, _______, _______, _______, AG_NORM, \
-    _______, RESET  , RGB_TOG, RGB_MOD, RGB_HUD, RGB_HUI, _______,                         _______, RGB_SAD, RGB_SAI, RGB_VAD, RGB_VAI, _______, _______, \
+    MC_DEBG, RESET  , RGB_TOG, RGB_MOD, RGB_HUD, RGB_HUI, _______,                         _______, RGB_SAD, RGB_SAI, RGB_VAD, RGB_VAI, _______, _______, \
     _______, _______, BL_TOGG, BL_BRTG, BL_INC , BL_DEC , _______,                         _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, _______, _______, _______, _______, _______,                         _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, _______, _______,          _______, _______, _______,       _______, _______, _______,          _______, _______, _______, _______  \
@@ -116,6 +120,14 @@ void persistent_default_layer_set(uint16_t default_layer) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  dprintf("record.\n"
+          "  event.pressed = %u\n"
+          "  tap.count = %u\n"
+          "  tap.interrupted = %u\n"
+              , record->event.pressed
+              , record->tap.count
+              , record->tap.interrupted);
+
   switch (keycode) {
     case QWERTY:
       if (record->event.pressed) {
@@ -124,46 +136,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case LOWER:
+    case MC_DEBG:
       if (record->event.pressed) {
-        layer_on(_LOWER);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
-      } else {
-        layer_off(_LOWER);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        debug_enable = !debug_enable;
+        if (debug_enable) {
+          dprint("\nDEBUG: enabled.\n");
+        }
       }
-      return false;
-      break;
-    case RAISE:
-      if (record->event.pressed) {
-        layer_on(_RAISE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
-      } else {
-        layer_off(_RAISE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
-      }
-      return false;
-      break;
-    case ADJUST:
-      if (record->event.pressed) {
-        layer_on(_ADJUST);
-      } else {
-        layer_off(_ADJUST);
-      }
-      return false;
-      break;
-    case WM_MHKN:
-      if (record->event.pressed) {
-        SEND_STRING(SS_TAP(X_LANG1) SS_TAP(X_INT5)); // LANG1 == かな on MaxOSX & INT5 == 無変換
-      }
-      return false;
-      break;
-    case WM_HKEI:
-      if (record->event.pressed) {
-        SEND_STRING(SS_TAP(X_LANG2) SS_TAP(X_INT4)); // LANG1 == 英数 on MaxOSX & INT4 == 変換
-      }
-      return false;
       break;
   }
   return true;
+}
+
+
+// Macro actions for each corresponding ID.
+const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
+  dprintf("record.\n"
+          "  event.pressed = %u\n"
+          "  tap.count = %u\n"
+          "  tap.interrupted = %u\n"
+          "id = %u\n"
+          "opt = %u\n"
+              , record->event.pressed
+              , record->tap.count
+              , record->tap.interrupted
+              , id
+              , opt);
+
+  switch(id) {
+    case UM_RAISE_KANA_HENKAN:
+      // Hold: RAISE, Tap: LANG1(かな on MaxOSX) & INT4(変換 on Windows)
+      return MACRO_TAP_HOLD_LAYER(record, MACRO(T(LANG1), T(INT4), END), _RAISE);
+    case UM_LOWER_EISU_MUHENKAN:
+      // Hold: LOWER, Tap: LANG2(英数 on MaxOSX) & INT5(無変換 on Windows)
+      return MACRO_TAP_HOLD_LAYER(record, MACRO(T(LANG2), T(INT5), END), _LOWER);
+  }
+  return MACRO_NONE;
 }
