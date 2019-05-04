@@ -92,7 +92,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,----------------------------------------------------------------------------------------------------------------------.
    * |  Mac |      |      |      |      |      |      |                    |      |      |      |      |      |      |  Win |
    * |------+------+------+------+------+------+---------------------------+------+------+------+------+------+------+------|
-   * |      | Reset|RGB ON|  MODE|  HUE-|  HUE+|      |                    |      |  SAT-|  SAT+|  VAL-|  VAL+|      |      |
+   * | Debug| Reset|RGB ON|  MODE|  HUE-|  HUE+|      |                    |      |  SAT-|  SAT+|  VAL-|  VAL+|      |      |
    * |------+------+------+------+------+------+---------------------------+------+------+------+------+------+------+------|
    * |      |      |      |      |      |      |      |                    |      |      |      |      |      |      |      |
    * |------+------+------+------+------+------+---------------------------+------+------+------+------+------+------+------|
@@ -120,18 +120,21 @@ void persistent_default_layer_set(uint16_t default_layer) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  dprintf("record.\n"
-          "  event.pressed = %u\n"
-          "  tap.count = %u\n"
-          "  tap.interrupted = %u\n"
+  dprintf("process_record_user: keycode = %5u"
+          ", event.pressed = %u"
+          ", event.time = %7u"
+          ", tap.count = %2u"
+          ", tap.interrupted = %u\n"
+              , keycode
               , record->event.pressed
+              , record->event.time
               , record->tap.count
               , record->tap.interrupted);
 
   switch (keycode) {
     case QWERTY:
       if (record->event.pressed) {
-         print("mode just switched to qwerty and this is a huge string\n");
+        print("mode just switched to qwerty and this is a huge string\n");
         set_single_persistent_default_layer(_QWERTY);
       }
       return false;
@@ -140,7 +143,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         debug_enable = !debug_enable;
         if (debug_enable) {
-          dprint("\nDEBUG: enabled.\n");
+          dprint("DEBUG: enabled.\n");
         }
       }
       break;
@@ -151,17 +154,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // Macro actions for each corresponding ID.
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
-  dprintf("record.\n"
-          "  event.pressed = %u\n"
-          "  tap.count = %u\n"
-          "  tap.interrupted = %u\n"
-          "id = %u\n"
-          "opt = %u\n"
-              , record->event.pressed
-              , record->tap.count
-              , record->tap.interrupted
+  dprintf("action_get_macro   : id = %u"
+          ", opt = %u"
+          ", event.pressed = %u"
+          ", event.time = %7u"
+          ", tap.count = %2u"
+          ", tap.interrupted = %u\n"
               , id
-              , opt);
+              , opt
+              , record->event.pressed
+              , record->event.time
+              , record->tap.count
+              , record->tap.interrupted);
 
   switch(id) {
     case UM_RAISE_KANA_HENKAN:
