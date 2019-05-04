@@ -169,9 +169,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case SHIFTSP:
       if (record->event.pressed) {
         sands_tapped = true;
-        register_code(KC_LSHIFT);
+        register_code(KC_RSHIFT);
       } else {
-        unregister_code(KC_LSHIFT);
+        unregister_code(KC_RSHIFT);
         if (sands_tapped) {
           tap_code(KC_SPACE);
         }
@@ -190,7 +190,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     default:
       if (record->event.pressed) {
-      } else {
         raise_tapped = false;
         lower_tapped = false;
         sands_tapped = false;
