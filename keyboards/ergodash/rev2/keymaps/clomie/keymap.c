@@ -10,17 +10,12 @@ extern keymap_config_t keymap_config;
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
+  SHIFTSP,
+  RAISE,
+  LOWER,
   MC_DEBG,
 };
 
-#define SHIFTSP MT(MOD_LSFT, KC_SPC)
-
-enum user_macro {
-  UM_RAISE_KANA_HENKAN,
-  UM_LOWER_EISU_MUHENKAN,
-};
-#define RAISE MACROTAP(UM_RAISE_KANA_HENKAN)
-#define LOWER MACROTAP(UM_LOWER_EISU_MUHENKAN)
 #define ADJUST MO(_ADJUST)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -119,6 +114,10 @@ void persistent_default_layer_set(uint16_t default_layer) {
   default_layer_set(default_layer);
 }
 
+static bool raise_tapped = false;
+static bool lower_tapped = false;
+static bool sands_tapped = false;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   dprintf("process_record_user: keycode = %5u"
           ", event.pressed = %u"
@@ -139,6 +138,47 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+    case RAISE:
+      if (record->event.pressed) {
+        raise_tapped = true;
+        layer_on(_RAISE);
+      } else {
+        layer_off(_RAISE);
+        if (raise_tapped) {
+          // LANG1(かな on MaxOSX) & INT4(変換 on Windows)
+          SEND_STRING(SS_TAP(X_LANG1) SS_TAP(X_INT4));
+        }
+        raise_tapped = false;
+      }
+      return false;
+      break;
+    case LOWER:
+      if (record->event.pressed) {
+        lower_tapped = true;
+        layer_on(_LOWER);
+      } else {
+        layer_off(_LOWER);
+        if (lower_tapped) {
+          // LANG2(英数 on MaxOSX) & INT5(無変換 on Windows)
+          SEND_STRING(SS_TAP(X_LANG2) SS_TAP(X_INT5));
+        }
+        lower_tapped = false;
+      }
+      return false;
+      break;
+    case SHIFTSP:
+      if (record->event.pressed) {
+        sands_tapped = true;
+        register_code(KC_LSHIFT);
+      } else {
+        unregister_code(KC_LSHIFT);
+        if (sands_tapped) {
+          tap_code(KC_SPACE);
+        }
+        sands_tapped = false;
+      }
+      return false;
+      break;
     case MC_DEBG:
       if (record->event.pressed) {
         debug_enable = !debug_enable;
@@ -146,34 +186,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           dprint("DEBUG: enabled.\n");
         }
       }
+      return false;
+      break;
+    default:
+      if (record->event.pressed) {
+      } else {
+        raise_tapped = false;
+        lower_tapped = false;
+        sands_tapped = false;
+      }
       break;
   }
   return true;
-}
-
-
-// Macro actions for each corresponding ID.
-const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
-  dprintf("action_get_macro   : id = %u"
-          ", opt = %u"
-          ", event.pressed = %u"
-          ", event.time = %7u"
-          ", tap.count = %2u"
-          ", tap.interrupted = %u\n"
-              , id
-              , opt
-              , record->event.pressed
-              , record->event.time
-              , record->tap.count
-              , record->tap.interrupted);
-
-  switch(id) {
-    case UM_RAISE_KANA_HENKAN:
-      // Hold: RAISE, Tap: LANG1(かな on MaxOSX) & INT4(変換 on Windows)
-      return MACRO_TAP_HOLD_LAYER(record, MACRO(T(LANG1), T(INT4), END), _RAISE);
-    case UM_LOWER_EISU_MUHENKAN:
-      // Hold: LOWER, Tap: LANG2(英数 on MaxOSX) & INT5(無変換 on Windows)
-      return MACRO_TAP_HOLD_LAYER(record, MACRO(T(LANG2), T(INT5), END), _LOWER);
-  }
-  return MACRO_NONE;
 }
