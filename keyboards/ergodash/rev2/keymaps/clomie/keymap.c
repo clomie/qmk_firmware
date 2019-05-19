@@ -158,14 +158,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               , record->tap.interrupted);
 
   switch (keycode) {
-    case MAC:
-      if (record->event.pressed) {
-        dprintln("Enable Mac Layout");
-      }
-      break;
     case WIN:
       if (record->event.pressed) {
         dprintln("Enable Win Layout");
+        set_single_persistent_default_layer(_WIN);
+      }
+      break;
+    case MAC:
+      if (record->event.pressed) {
+        dprintln("Enable Mac Layout");
+        set_single_persistent_default_layer(_MAC);
       }
       break;
   }
