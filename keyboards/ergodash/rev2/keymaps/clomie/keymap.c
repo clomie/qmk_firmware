@@ -12,15 +12,20 @@ extern keymap_config_t keymap_config;
 enum custom_keycodes {
   WIN = SAFE_RANGE,
   MAC,
-  SHIFTSP,
-  RAISE,
-  LOWER,
   MC_DEBG,
 };
 
-#define MAC DF(_MAC)
-#define WIN DF(_WIN)
+#define WINRAISE LT(_RAISE, JP_HENK)
+#define WINLOWER LT(_LOWER, JP_MHEN)
+
+#define MACRAISE LT(_RAISE, JP_MKANA)
+#define MACLOWER LT(_LOWER, JP_MEISU)
+
 #define ADJUST MO(_ADJUST)
+
+#define LSHFTSP LSFT_T(KC_SPACE)
+#define RSHFTSP RSFT_T(KC_SPACE)
+
 #define CTLPGUP LCTL(KC_PGUP)
 #define CTLPGDN LCTL(KC_PGDN)
 
@@ -44,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    JP_LBRC,                          JP_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    JP_AT,   \
     XXXXXXX, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    JP_YEN,                           KC_B,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, JP_COLN, \
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_PSCR,                          KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, JP_BSLS, \
-    KC_LCTL, KC_LWIN, KC_LCTL, KC_LALT,          LOWER,   SHIFTSP, KC_ENT,         KC_ENT,  SHIFTSP, RAISE,            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
+    KC_LCTL, KC_LWIN, KC_LCTL, KC_LALT,          WINLOWER,LSHFTSP, KC_ENT,         KC_ENT,  RSHFTSP, WINRAISE,         KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
   ),
 
   /* Qwerty - MacOSX
@@ -65,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    JP_LBRC,                          JP_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    JP_AT,   \
     XXXXXXX, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    JP_YEN,                           KC_B,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, JP_COLN, \
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_PSCR,                          KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, JP_BSLS, \
-    KC_LCTL, KC_LALT, KC_LGUI, KC_LALT,          LOWER,   SHIFTSP, KC_ENT,         KC_ENT,  SHIFTSP, RAISE,            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
+    KC_LCTL, KC_LALT, KC_LGUI, KC_LALT,          MACLOWER,LSHFTSP, KC_ENT,         KC_ENT,  RSHFTSP, MACRAISE,         KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
   ),
 
   /* Raise
@@ -141,10 +146,6 @@ void persistent_default_layer_set(uint16_t default_layer) {
   default_layer_set(default_layer);
 }
 
-static bool raise_tapped = false;
-static bool lower_tapped = false;
-static bool sands_tapped = false;
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   dprintf("process_record_user: keycode = %5u"
           ", event.pressed = %u"
@@ -168,47 +169,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         dprintln("Enable Win Layout");
       }
       break;
-    case RAISE:
-      if (record->event.pressed) {
-        raise_tapped = true;
-        layer_on(_RAISE);
-      } else {
-        layer_off(_RAISE);
-        if (raise_tapped) {
-          // LANG1(かな on MaxOSX) & INT4(変換 on Windows)
-          SEND_STRING(SS_TAP(X_LANG1) SS_TAP(X_INT4));
-        }
-        raise_tapped = false;
-      }
-      return false;
-      break;
-    case LOWER:
-      if (record->event.pressed) {
-        lower_tapped = true;
-        layer_on(_LOWER);
-      } else {
-        layer_off(_LOWER);
-        if (lower_tapped) {
-          // LANG2(英数 on MaxOSX) & INT5(無変換 on Windows)
-          SEND_STRING(SS_TAP(X_LANG2) SS_TAP(X_INT5));
-        }
-        lower_tapped = false;
-      }
-      return false;
-      break;
-    case SHIFTSP:
-      if (record->event.pressed) {
-        sands_tapped = true;
-        register_code(KC_RSHIFT);
-      } else {
-        unregister_code(KC_RSHIFT);
-        if (sands_tapped) {
-          tap_code(KC_SPACE);
-        }
-        sands_tapped = false;
-      }
-      return false;
-      break;
     case MC_DEBG:
       if (record->event.pressed) {
         debug_enable = !debug_enable;
@@ -217,13 +177,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       return false;
-      break;
-    default:
-      if (record->event.pressed) {
-        raise_tapped = false;
-        lower_tapped = false;
-        sands_tapped = false;
-      }
       break;
   }
   return true;
