@@ -12,7 +12,6 @@ extern keymap_config_t keymap_config;
 enum custom_keycodes {
   WIN = SAFE_RANGE,
   MAC,
-  MC_DEBG,
 };
 
 #define WINRAISE LT(_RAISE, JP_HENK)
@@ -130,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_ADJUST] = LAYOUT(
     MAC,     _______, _______, _______, _______, _______, _______,                         _______, _______, _______, _______, _______, _______, WIN, \
-    MC_DEBG, RESET  , RGB_TOG, RGB_MOD, RGB_HUD, RGB_HUI, _______,                         _______, RGB_SAD, RGB_SAI, RGB_VAD, RGB_VAI, _______, _______, \
+    DEBUG,   RESET  , RGB_TOG, RGB_MOD, RGB_HUD, RGB_HUI, _______,                         _______, RGB_SAD, RGB_SAI, RGB_VAD, RGB_VAI, _______, _______, \
     _______, _______, BL_TOGG, BL_BRTG, BL_INC , BL_DEC , _______,                         _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, _______, _______, _______, _______, _______,                         _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, _______, _______,          _______, _______, _______,       _______, _______, _______,          _______, _______, _______, _______  \
@@ -168,15 +167,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         dprintln("Enable Win Layout");
       }
-      break;
-    case MC_DEBG:
-      if (record->event.pressed) {
-        debug_enable = !debug_enable;
-        if (debug_enable) {
-          dprint("DEBUG: enabled.\n");
-        }
-      }
-      return false;
       break;
   }
   return true;
