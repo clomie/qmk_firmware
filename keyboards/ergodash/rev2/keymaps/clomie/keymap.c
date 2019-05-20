@@ -3,15 +3,15 @@
 
 extern keymap_config_t keymap_config;
 
-#define _WIN 0
-#define _MAC 1
-#define _LOWER 2
-#define _RAISE 3
-#define _ADJUST 4
+#define _MAC 0
+#define _WIN 2
+#define _RAISE 8
+#define _LOWER 12
+#define _ADJUST 15
 
 enum custom_keycodes {
-  WIN = SAFE_RANGE,
-  MAC,
+  MAC = SAFE_RANGE,
+  WIN,
 };
 
 #define WINRAISE LT(_RAISE, JP_HENK)
@@ -30,6 +30,27 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
+  /* Qwerty - MacOSX
+   * ,----------------------------------------------------------------------------------------------------------------------------------------------------.
+   * | ESC  |   1!   |   2"   |   3#   |   4$   |   5%   |   6&   |                        |   6&   |   7'   |   8(   |   9)   |    0   |   -=   |   ^~   |
+   * |------+--------+--------+--------+--------+--------+--------+------------------------+--------+--------+--------+--------+--------+--------+--------|
+   * | Tab  |    Q   |    W   |    E   |    R   |    T   |   [{   |                        |   ]}   |    Y   |    U   |    I   |    O   |    P   |   @`   |
+   * |------+--------+--------+--------+--------+--------+--------+------------------------+--------+--------+--------+--------+--------+--------+--------|
+   * |      |    A   |    S   |    D   |    F   |    G   |   \|   |                        |    B   |    H   |    J   |    K   |    L   |   ;+   |   :*   |
+   * |------+--------+--------+--------+--------+--------+---------------------------------+--------+--------+--------+--------+--------+--------+--------|
+   * | Shift|    Z   |    X   |    C   |    V   |    B   | PrtScr |                        | Backsp |    N   |    M   |   ,>   |   .>   |   /?   |   \_   |
+   * |---------------+--------+--------+--------+--------+--------+--------+------+--------+--------+--------+--------+--------+--------+-----------------|
+   * | Ctrl |   Alt  |   Cmd  |   Alt  ||||||||||  Lower |Spc/Shft|  Enter ||||||||  Enter |Spc/Shft|  Raise ||||||||||  Left  |  Down  |   Up   |  Right |
+   * ,----------------------------------------------------------------------------------------------------------------------------------------------------.
+   */
+  [_MAC] = LAYOUT( \
+    KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,                             KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, JP_CIRC, \
+    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    JP_LBRC,                          JP_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    JP_AT,   \
+    XXXXXXX, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    JP_YEN,                           KC_B,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, JP_COLN, \
+    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_PSCR,                          KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, JP_BSLS, \
+    KC_LCTL, KC_LALT, KC_LGUI, KC_LALT,          MACLOWER,LSHFTSP, KC_LSFT,        KC_ENT,  RSHFTSP, MACRAISE,         KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
+  ),
+
   /* Qwerty - Windows
    * ,----------------------------------------------------------------------------------------------------------------------------------------------------.
    * | ESC  |   1!   |   2"   |   3#   |   4$   |   5%   |   6&   |                        |   6&   |   7'   |   8(   |   9)   |    0   |   -=   |   ^~   |
@@ -40,7 +61,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+--------+--------+--------+--------+--------+---------------------------------+--------+--------+--------+--------+--------+--------+--------|
    * | Shift|    Z   |    X   |    C   |    V   |    B   | PrtScr |                        | Backsp |    N   |    M   |   ,>   |   .>   |   /?   |   \_   |
    * |---------------+--------+--------+--------+--------+--------+--------+------+--------+--------+--------+--------+--------+--------+-----------------|
-   * | Ctrl |   Win  |  Ctrl  |   Alt  ||||||||||  Lower |Spc/Shft|  Enter ||||||||  Enter |Spc/Shft|  Raise ||||||||||  Left  |  Down  |   Up   |  Right |
+   * | Ctrl |   Win  |  Ctrl  |   Alt  ||||||||||  Lower |Spc/Shft|  Ctrl  ||||||||  Enter |Spc/Shft|  Raise ||||||||||  Left  |  Down  |   Up   |  Right |
    * ,----------------------------------------------------------------------------------------------------------------------------------------------------.
    */
   [_WIN] = LAYOUT( \
@@ -48,28 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    JP_LBRC,                          JP_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    JP_AT,   \
     XXXXXXX, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    JP_YEN,                           KC_B,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, JP_COLN, \
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_PSCR,                          KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, JP_BSLS, \
-    KC_LCTL, KC_LWIN, KC_LCTL, KC_LALT,          WINLOWER,LSHFTSP, KC_ENT,         KC_ENT,  RSHFTSP, WINRAISE,         KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
-  ),
-
-  /* Qwerty - MacOSX
-   * ,----------------------------------------------------------------------------------------------------------------------------------------------------.
-   * | ESC  |   1!   |   2"   |   3#   |   4$   |   5%   |   6&   |                        |   6&   |   7'   |   8(   |   9)   |    0   |   -=   |   ^~   |
-   * |------+--------+--------+--------+--------+--------+--------+------------------------+--------+--------+--------+--------+--------+--------+--------|
-   * | Tab  |    Q   |    W   |    E   |    R   |    T   |   [{   |                        |   ]}   |    Y   |    U   |    I   |    O   |    P   |   @`   |
-   * |------+--------+--------+--------+--------+--------+--------+------------------------+--------+--------+--------+--------+--------+--------+--------|
-   * |      |    A   |    S   |    D   |    F   |    G   |   \|   |                        |    B   |    H   |    J   |    K   |    L   |   ;+   |   :*   |
-   * |------+--------+--------+--------+--------+--------+---------------------------------+--------+--------+--------+--------+--------+--------+--------|
-   * | Shift|    Z   |    X   |    C   |    V   |    B   | PrtScr |                        |  Bcksp |    N   |    M   |   ,>   |   .>   |   /?   |   \_   |
-   * |---------------+--------+--------+--------+--------+--------+--------+------+--------+--------+--------+--------+--------+--------+-----------------|
-   * | Ctrl |   Alt  |   Cmd  |   Alt  ||||||||||  Lower |Spc/Shft|  Enter ||||||||  Enter |Spc/Shft|  Raise ||||||||||  Left  |  Down  |   Up   |  Right |
-   * ,----------------------------------------------------------------------------------------------------------------------------------------------------.
-   */
-  [_MAC] = LAYOUT( \
-    KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,                             KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, JP_CIRC, \
-    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    JP_LBRC,                          JP_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    JP_AT,   \
-    XXXXXXX, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    JP_YEN,                           KC_B,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, JP_COLN, \
-    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_PSCR,                          KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, JP_BSLS, \
-    KC_LCTL, KC_LALT, KC_LGUI, KC_LALT,          MACLOWER,LSHFTSP, KC_ENT,         KC_ENT,  RSHFTSP, MACRAISE,         KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
+    KC_LCTL, KC_LWIN, KC_LCTL, KC_LALT,          WINLOWER,LSHFTSP, KC_LSFT,        KC_ENT,  RSHFTSP, WINRAISE,         KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
   ),
 
   /* Raise
@@ -128,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,----------------------------------------------------------------------------------------------------------------------.
    */
   [_ADJUST] = LAYOUT(
-    MAC,     _______, _______, _______, _______, _______, _______,                         _______, _______, _______, _______, _______, _______, WIN, \
+    MAC,     _______, _______, _______, _______, _______, _______,                         _______, _______, _______, _______, _______, _______, WIN,     \
     DEBUG,   RESET  , RGB_TOG, RGB_MOD, RGB_HUD, RGB_HUI, _______,                         _______, RGB_SAD, RGB_SAI, RGB_VAD, RGB_VAI, _______, _______, \
     _______, _______, BL_TOGG, BL_BRTG, BL_INC , BL_DEC , _______,                         _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, _______, _______, _______, _______, _______,                         _______, _______, _______, _______, _______, _______, _______, \
@@ -153,16 +153,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               , record->tap.interrupted);
 
   switch (keycode) {
-    case WIN:
-      if (record->event.pressed) {
-        dprintln("Enable Win Layout");
-        set_single_persistent_default_layer(_WIN);
-      }
-      break;
     case MAC:
       if (record->event.pressed) {
         dprintln("Enable Mac Layout");
         set_single_persistent_default_layer(_MAC);
+      }
+      break;
+    case WIN:
+      if (record->event.pressed) {
+        dprintln("Enable Win Layout");
+        set_single_persistent_default_layer(_WIN);
       }
       break;
   }
