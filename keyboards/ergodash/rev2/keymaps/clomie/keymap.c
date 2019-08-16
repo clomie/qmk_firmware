@@ -19,7 +19,7 @@ enum custom_keycodes {
 
 #define MACRAISE LT(_RAISE, JP_MKANA)
 #define MACLOWER LT(_LOWER, JP_MEISU)
-#define MACZHTG LCMD(KC_SPACE)
+#define MACZHTG RCMD(KC_SPACE)
 
 #define RAISE MO(_RAISE)
 #define LOWER MO(_LOWER)
@@ -49,9 +49,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_MAC] = LAYOUT( \
     KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,                             KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, JP_CIRC, \
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    JP_LBRC,                          JP_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    JP_AT,   \
-    KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    JP_YEN,                           KC_DEL,  KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, JP_COLN, \
+    MACZHTG, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    JP_YEN,                           KC_DEL,  KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, JP_COLN, \
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_PSCR,                          KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, JP_BSLS, \
-    KC_LCTL, KC_LALT, KC_LGUI,     KC_LALT,      MACLOWER,RSHFTSP, MACZHTG,        KC_ENT,  KC_SPC,  RAISE,       JP_MKANA,     KC_RGUI, KC_RALT, KC_LSFT  \
+    KC_LCTL, KC_LALT, KC_LGUI,     KC_LALT,      MACLOWER,RSHFTSP, KC_BSPC,        KC_ENT,  KC_SPC,  RAISE,       JP_MKANA,     KC_RGUI, KC_RALT, KC_LSFT  \
   ),
 
   /* Qwerty - Windows
@@ -60,26 +60,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+--------+--------+--------+--------+--------+--------+------------------------+--------+--------+--------+--------+--------+--------+--------|
    * | Tab  |    Q   |    W   |    E   |    R   |    T   |   [{   |                        |   ]}   |    Y   |    U   |    I   |    O   |    P   |   @`   |
    * |------+--------+--------+--------+--------+--------+--------+------------------------+--------+--------+--------+--------+--------+--------+--------|
-   * | Ctrl |    A   |    S   |    D   |    F   |    G   |   \|   |                        | Delete |    H   |    J   |    K   |    L   |   ;+   |   :*   |
+   * | 全/半|    A   |    S   |    D   |    F   |    G   |   \|   |                        | Delete |    H   |    J   |    K   |    L   |   ;+   |   :*   |
    * |------+--------+--------+--------+--------+--------+---------------------------------+--------+--------+--------+--------+--------+--------+--------|
    * | Shift|    Z   |    X   |    C   |    V   |    B   | PrtScr |                        | Backsp |    N   |    M   |   ,>   |   .>   |   /?   |   \_   |
    * |---------------+--------+--------+--------+--------+--------+--------+------+--------+--------+--------+--------+--------+--------+-----------------|
-   * | Ctrl |   Win  |  Ctrl  |||||   Alt  ||||||  Lower |Spc/Shft| 全/半  ||||||||  Enter | Space  | Raise  ||||||  変換  |||||  Win   |  Alt   | Shift  |
+   * | Ctrl |   Win  |  Ctrl  |||||   Alt  ||||||  Lower | Space  | Backsp ||||||||  Enter | Space  | Raise  ||||||  変換  |||||  Win   |  Alt   | Shift  |
    * ,----------------------------------------------------------------------------------------------------------------------------------------------------.
    */
   [_WIN] = LAYOUT( \
     KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,                             KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, JP_CIRC, \
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    JP_LBRC,                          JP_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    JP_AT,   \
-    KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    JP_YEN,                           KC_DEL,  KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, JP_COLN, \
+    JP_ZHTG, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    JP_YEN,                           KC_DEL,  KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, JP_COLN, \
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_PSCR,                          KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, JP_BSLS, \
-    KC_LCTL, KC_LWIN, KC_LCTL,     KC_LALT,      WINLOWER,LSHFTSP, JP_ZHTG,        KC_ENT,  KC_SPC,  RAISE,        JP_HENK,     KC_RWIN, KC_RALT, KC_RSFT  \
+    KC_LCTL, KC_LWIN, KC_LCTL,     KC_LALT,      WINLOWER,RSHFTSP, KC_BSPC,        KC_ENT,  KC_SPC,  RAISE,        JP_HENK,     KC_RWIN, KC_RALT, KC_RSFT  \
   ),
 
   /* Raise
    * ,----------------------------------------------------------------------------------------------------------------------------------------------------.
    * |      |   F1   |   F2   |   F3   |   F4   |   F5   |   F6   |                        |   F6   |   F7   |   F8   |   F9   |   F10  |   F11  |   F12  |
    * |------+--------+--------+--------+--------+--------+--------+------------------------+--------+--------+--------+--------+--------+--------+--------|
-   * |      |        |        |        |        |        |        |                        |        |  Home  |  PgDn  |  PgUp  |   End  |        |Ctl+PgUp|
+   * |      |        |        |        |        |        |        |                        |        |  Home  |  PgDn  |  PgUp  |   End  | Insert |Ctl+PgUp|
    * |------+--------+--------+--------+--------+--------+--------+------------------------+--------+--------+--------+--------+--------+--------+--------|
    * |      |        |        |        |        |        |        |                        |        |   ←   |   ↓   |   ↑   |   →   |        |Ctl+PgDn|
    * |------+--------+--------+--------+--------+--------+---------------------------------+--------+--------+--------+--------+--------+--------+--------|
@@ -90,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_RAISE] = LAYOUT(
     _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  \
-    _______, _______, _______, _______, _______, _______, _______,                          _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  XXXXXXX, CTLPGUP, \
+    _______, _______, _______, _______, _______, _______, _______,                          _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_INS,  CTLPGUP, \
     _______, _______, _______, _______, _______, _______, _______,                          _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, XXXXXXX, CTLPGDN, \
     _______, _______, _______, _______, _______, _______, _______,                          _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, _______,     _______,      ADJUST,  _______, _______,        _______, _______, _______,      _______,     _______, _______, _______  \
