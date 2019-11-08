@@ -35,8 +35,10 @@ enum custom_keycodes {
 #define SPADJST LT(_ADJUST, KC_SPACE)
 
 #define MACZKHK RCMD(KC_SPACE)
-#define CTLPGUP LCTL(KC_PGUP)
-#define CTLPGDN LCTL(KC_PGDN)
+#define CTLHOME RCTL(KC_HOME)
+#define CTLEND  RCTL(KC_END)
+#define CTLPGUP RCTL(KC_PGUP)
+#define CTLPGDN RCTL(KC_PGDN)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_MAC] = LAYOUT( \
@@ -57,8 +59,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_RAISE] = LAYOUT( \
     _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,          KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX, \
-    _______, _______, _______, _______, _______, _______,                          KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_INS,  CTLPGUP, XXXXXXX, \
-    _______, _______, _______, _______, _______, _______,                          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, XXXXXXX, CTLPGDN, XXXXXXX, \
+    _______, _______, _______, _______, _______, _______,                          KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_INS,  CTLHOME, CTLPGUP, \
+    _______, _______, _______, _______, _______, _______,                          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, XXXXXXX, CTLEND,  CTLPGDN, \
     _______, _______, _______, _______, _______, _______, _______,        _______, _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, _______, _______,          SPADJST, _______,        _______, _______,          _______, _______, _______, _______ \
   ),
