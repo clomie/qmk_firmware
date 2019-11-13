@@ -16,8 +16,6 @@
 #include QMK_KEYBOARD_H
 #include "keymap_jp.h"
 
-extern keymap_config_t keymap_config;
-
 enum layer_names {
   _MAC,
   _WIN,
@@ -30,6 +28,7 @@ enum custom_keycodes {
   MAC = SAFE_RANGE,
   WIN,
 };
+
 #define SPRAISE LT(_RAISE,  KC_SPACE)
 #define SPLOWER LT(_LOWER,  KC_SPACE)
 #define SPADJST LT(_ADJUST, KC_SPACE)
@@ -109,17 +108,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
   }
   return true;
-}
-
-
-void matrix_init_user(void) {
-
-}
-
-void matrix_scan_user(void) {
-
-}
-
-void led_set_user(uint8_t usb_led) {
-
 }
